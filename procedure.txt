@@ -1,0 +1,111 @@
+now for the same system i made a module called lift. it receives a floor_req as input as a 4 bit number 
+representating floor number.curr floor of any lift will be 0 at the beginning.
+when the motor_signal is 00 it means the lift is idle and has no previous requests.
+when motor_signal is 11 it means lift is moving up and when 10 it means moving down. 
+once the lift receives an floor req when being idle it will check if destination floor greater than or 
+less than the curr floor and then repectively change the motor signal. 
+the curr_floor of the lift changes by 1 after every 2 clk cycles when moving up or down until it reaches 
+the destination floor.
+once it reaches the required floor it will accept another request "req_in_lift"
+and then based on the curr floor of lift it will decide to move up or down by changing he motor signal 
+and making it 00 after reaching the floor requested from inside the lift.
+this is skeleton of my verilog code. please help me write the logic:
+module lift(
+	floorReq,
+	liftState,
+	motor_signal,
+	clk,
+	req_in_lift;
+	rst
+	);
+	
+	input clk,rst;
+	input [3:0] req_in_lift;
+	input [3:0] floorReq;
+	output reg [3:0] liftState;
+	output motor_signal;
+	integer currFloor;
+	
+
+
+endmodule
+
+continuing from the same system:
+now we want to add another functionality to the this lift module. what if the lift receives another req 
+while moving up or down or while executing req_in_lift?
+how does the the lift handle two simultanous request?
+previous req: floor_req 1 or req_in_lift1
+new req: floor_req 2 or req_in_lift 2
+
+assume that both requests want to go in the same direction and that the new request floor is on the way of initial req floor.
+lift picks both passengers on the way and drop them as and when the passengers desired floor arrives.
+
+also in the earlier implementation we did not consider multiple req_in_lift. Different people might want to go to different floor.
+we have to create an array of req_in_floor of size 10 as the number of floors is 10. 
+the index of array will tell the floor number. 1 in the array means passenger wants to go there. 
+once it reaches make it zero and keep going on until the entire array becomes 0.
+
+so handle these both situations we can create an single 11 bit array where the index represents the floor number.
+whenever we receive an new request from either the floor or from inside the lift we make it 1 at that index and make it back to 0 once reached. 
+write this verilog code  
+
+
+
+now we move on to the next module central_system. 
+The central system will decide which floor request should go to which lift depending on the lift_state and 
+array of requests. It inputs floorReq array when bit is 1 then that index floor has called for the request.
+if U array bit is 1 it means the passnger on that index floor wants to go up and similaryly for D array 
+it wants to go down. 
+One default lift when the priority same for all lifts
+-If no lifts available after condition checking, wait until one lift becomes free and idle
+-Condition checking:Check for Nearest liftIf that lift is idle with no prior requests send it
+If that lift has prior requests and is moving-check if the new floor is on the way of its moving and 
+the new passengers wants to go in the same direction as the old passenger. 
+We also check that the request array dont have more than 3 requests(floor aswell as inside the lift req).
+If Moving Up, req1 up, req2 up OR Moving Down, req1 down, req2 down difference between the floors
+doesn’t matter. Any other cases like Moving Up, req1(i) down, req2(j) down, j>i then make sure |j-i|<=3
+And Moving Down, req1 up, req2 up ,i>j then make sure |j-i|<=3.
+If none of these conditions match we check for the next nearest lift
+.If two or more lifts are at nearest distance and they satisfy the conditions then we send the 
+moving liftover an idle one. once the req are forwarded to the lift and the lift reaches the floor 
+we send the off_req to the floor.
+write the verilog code for this:
+module central_system(
+offFloorReq,
+offUPorDOWN,
+FloorReq,
+U,
+D,
+liftstate1,
+liftstate2,
+liftstate3,
+liftstate4,
+FloortoLift1,
+FloortoLift2,
+FloortoLift3,
+FloortoLift4,
+clk,
+rst
+);
+
+input clk,rst;
+input [4:0] liftstate1; //receives curr floor of each lift
+input [4:0] liftstate2;
+input [4:0] liftstate3;
+input [4:0] liftstate4;
+
+output reg [3:0] FloortoLift1; //sends the request to that particular lift
+output reg [3:0] FloortoLift2;
+output reg [3:0] FloortoLift3;
+output reg [3:0] FloortoLift4;
+
+input [10:0] FloorReq;
+input [10:0] U;
+input [10:0] D;
+output reg [10:0] offFloorReq; //tells us which floor to send off req 
+output reg [10:0] offUPorDOWN; //tells us which up(1) or down(0) request to switch off
+
+//logic
+
+endmodule
+ 
