@@ -91,6 +91,8 @@ always @(posedge clk or posedge rst) begin
                     break;
                 end
             end
+        end
+        if(motor_signal == 2'b00 )begin
             for (i = currFloor - 1; i >= 0; i = i - 1) begin
                 if (requests[i] == 1'b1) begin
                     motor_signal <= 2'b10; // Move down

@@ -17,10 +17,10 @@ rst
 );
 
 input clk,rst;
-input [4:0] liftstate1;
-input [4:0] liftstate2;
-input [4:0] liftstate3;
-input [4:0] liftstate4;
+input [3:0] liftstate1;
+input [3:0] liftstate2;
+input [3:0] liftstate3;
+input [3:0] liftstate4;
 
 output reg [3:0] FloortoLift1;
 output reg [3:0] FloortoLift2;
@@ -33,35 +33,12 @@ input [10:0] D;
 output reg [10:0] offFloorReq;
 output reg [10:0] offUPorDOWN;
 
-//logic
-// Helper function to calculate absolute value
-function [3:0] abs;
-    input [3:0] value;
-    begin
-        abs = value[3] ? ~value + 1 : value;
-    end
-endfunction
-
-// Helper function to count active requests
-function [3:0] count_requests;
-    input [10:0] requests;
-    integer i;
-    begin
-        count_requests = 0;
-        for (i = 0; i < 11; i = i + 1) begin
-            if (requests[i] == 1'b1) begin
-                count_requests = count_requests + 1;
-            end
-        end
-    end
-endfunction
+integer i, j;
 
 // Internal variables to store requests assigned to lifts
 reg [10:0] lift_requests [3:0];
 reg [3:0] lift_floor [3:0];
 
-// Initial assignments
-integer i;
 always @(posedge clk or posedge rst) begin
     if (rst) begin
         FloortoLift1 <= 4'b0000;
@@ -107,15 +84,15 @@ end
 task assign_request;
     input [3:0] floor;
     input direction; // 1 for up, 0 for down
-    integer j, closest_lift, min_distance, distance;
-    reg [1:0] req_lift;
+    integer closest_lift, min_distance, distance;
+    //reg [1:0] req_lift;
     begin
         closest_lift = -1;
         min_distance = 15; // Set to a large initial value
 
         // Iterate through each lift to find the best match
         for (j = 0; j < 4; j = j + 1) begin
-            distance = abs(lift_floor[j] - floor);
+            distance = (lift_floor[j] > floor) ? (lift_floor[j] - floor) : (floor - lift_floor[j]);
             if ((closest_lift == -1) || (distance < min_distance)) begin
                 // Check if lift satisfies conditions
                 if ((lift_requests[j] == 0) || // Lift is idle
