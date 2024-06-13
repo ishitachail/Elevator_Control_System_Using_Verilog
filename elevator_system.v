@@ -1,4 +1,4 @@
-module elevator_system(motor_signal,in0,in1,in2,in3,in4,in5,in6,in7,in8,in9,in10,req_in_lift1,req_in_lift2,req_in_lift3,req_in_lift4,,clk,rst);
+module elevator_system(motor_signal,in0,in1,in2,in3,in4,in5,in6,in7,in8,in9,in10,req_in_lift1,req_in_lift2,req_in_lift3,req_in_lift4,clk,rst);
 
 input [1:0] in0,in1,in2,in3,in4,in5,in6,in7,in8,in9,in10;
 input [10:0] req_in_lift1,req_in_lift2,req_in_lift3,req_in_lift4;
