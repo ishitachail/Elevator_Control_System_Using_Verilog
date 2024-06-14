@@ -16,28 +16,32 @@ lift lift1(
 	.floorReq(lift1_in),
 	.liftState(lift1_out),
 	.clk(clk),
-	.rst(rst)
+	.rst(rst),
+	.motor_signal(motor_signal1)
 	);
 lift lift2(
 	.req_in_lift(req_in_lift2),
 	.floorReq(lift2_in),
 	.liftState(lift2_out),
 	.clk(clk),
-	.rst(rst)
+	.rst(rst),
+	.motor_signal(motor_signal2)
 	);
 lift lift3(
 	.req_in_lift(req_in_lift3),
 	.floorReq(lift3_in),
 	.liftState(lift3_out),
 	.clk(clk),
-	.rst(rst)
+	.rst(rst),
+	.motor_signal(motor_signal3)
 	);
 lift lift4(
 	.req_in_lift(req_in_lift4),
 	.floorReq(lift4_in),
 	.liftState(lift4_out),
 	.clk(clk),
-	.rst(rst)
+	.rst(rst),
+	.motor_signal(motor_signal4)
 	);
 
 floor floor0(
