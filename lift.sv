@@ -36,6 +36,7 @@ module lift(
     input rst,
     input [3:0] floorReq,
     input [10:0] req_in_lift,
+    //output reg [10:0] off_req_in_lift,
     output reg [3:0] liftState,
     output reg [1:0] motor_signal
 );
@@ -71,7 +72,13 @@ always @(posedge clk or posedge rst) begin
         end
 
        if (req_in_lift != 11'b00000000000) begin
-            requests = req_in_lift | requests;
+            for(i = 0; i < 11; i = i + 1)begin
+                if(req_in_lift[i] == 1)begin
+                    requests[i] <= 1'b1;
+                    //off_req_in_lift[i] <= 1'b1;
+                    //req_in_lift[i] <= 0;
+                end
+            end
         end
 
         // Check if the lift has reached any requested floor
