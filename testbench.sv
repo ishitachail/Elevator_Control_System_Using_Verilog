@@ -53,6 +53,7 @@ always #10 clk = ~clk;
 		motor_signal2 = 00;
 		motor_signal3 = 00;
 		motor_signal4 = 00;
+
 		req_in_lift1 = 11'b00000000000;
 		req_in_lift2 = 11'b00000000000;
 		req_in_lift3 = 11'b00000000000;
