@@ -53,7 +53,6 @@ always #10 clk = ~clk;
 		motor_signal2 = 00;
 		motor_signal3 = 00;
 		motor_signal4 = 00;
-
 		req_in_lift1 = 11'b00000000000;
 		req_in_lift2 = 11'b00000000000;
 		req_in_lift3 = 11'b00000000000;
@@ -65,8 +64,13 @@ always #10 clk = ~clk;
 
 		in7 = 2'b10;
 		#20;
-		req_in_lift1 = 11'b01000000000;
-
+		in6 = 2'b10;
+		#20;
+		in2 = 2'b10;
+		
+		//req_in_lift1 = 11'b01000000000;
+        #20;
+        //req_in_lift1 = 11'b00000000000;
 		// Wait 100 ns for global reset to finish
 		#300 $finish;
         

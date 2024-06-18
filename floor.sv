@@ -21,29 +21,31 @@ always @(posedge clk or posedge rst) begin
         request <= 3'b000;
     end else begin
         // Check floor signal
-        if (floor_signal[0] == 1 && off_request[0] == 0) begin
-            request[0] <= 1;
-            if (floor_signal[1] == 0) begin
+       // if (floor_signal[1] == 1 && off_request[1] == 0) begin
+            
+            if (floor_signal[1] == 1 && off_request[1] == 0 && floor_signal[0] == 0) begin
                 request[1] <= 1;
-                request[2] <= 0;
-            end else if (floor_signal[1] == 1) begin
-                request[1] <= 0;
+                //request[0] <= 0;
+                request[2] <= 1;
+            end else if (floor_signal[1] == 1 && off_request[1] == 0 && floor_signal[0] == 1) begin
+                //request[1] <= 0;
+                request[0] <= 1;
                 request[2] <= 1;
             end
-        end
+       // end
 
         // Check off_request
-        if (off_request[0] == 1) begin
-            if (off_request[1] == 0) begin
+        if (off_request[1] == 1) begin
+            if (off_request[0] == 0) begin
                 request[1] <= 0;
-            end else if (off_request[1] == 1) begin
-                request[2] <= 0;
+            end else if (off_request[0] == 1) begin
+                request[0] <= 0;
             end
         end
 
         // Check if all requests are off
-        if (request[1] == 0 && request[2] == 0) begin
-            request[0] <= 0;
+        if (request[1] == 0 && request[0] == 0) begin
+            request[2] <= 0;
         end
     end
 end

@@ -66,14 +66,12 @@ task assign_request;
             distance = (lift_floor[j] > floor) ? (lift_floor[j] - floor) : (floor - lift_floor[j]);
             if ((closest_lift == -1) || (distance < min_distance)) begin
                 // Check if lift satisfies conditions
-                if ((lift_requests[j] == 0) || // Lift is idle
-                    (direction == 1 && lift_floor[j] <= floor) || // Moving up and floor is above
-                    (direction == 0 && lift_floor[j] >= floor)) begin // Moving down and floor is below
+                
                     if (count_requests(lift_requests[j]) < 3) begin // Lift can handle more requests
                         closest_lift = j;
                         min_distance = distance;
                     end
-                end
+                
             end
         end
 
