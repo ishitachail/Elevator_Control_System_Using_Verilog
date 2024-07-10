@@ -24,10 +24,10 @@ input [3:0] liftstate2;
 input [3:0] liftstate3;
 input [3:0] liftstate4;
 
-output reg [3:0] FloortoLift1;
-output reg [3:0] FloortoLift2;
-output reg [3:0] FloortoLift3;
-output reg [3:0] FloortoLift4;
+output reg [10:0] FloortoLift1;
+output reg [10:0] FloortoLift2;
+output reg [10:0] FloortoLift3;
+output reg [10:0] FloortoLift4;
 
 input [10:0] FloorReq;
 input [10:0] U;
@@ -40,6 +40,8 @@ integer i, j;
 // Internal variables to store requests assigned to lifts
 reg [10:0] lift_requests [3:0];
 reg [3:0] lift_floor [3:0];
+
+
 function [3:0] count_requests;
     input [10:0] requests;
     integer i;
@@ -52,6 +54,8 @@ function [3:0] count_requests;
         end
     end
 endfunction
+
+
 task assign_request;
     input [3:0] floor;
     input direction; // 1 for up, 0 for down
@@ -118,10 +122,10 @@ always @(posedge clk or posedge rst) begin
         end
 
         // Update output requests for lifts
-        FloortoLift1 <= lift_requests[0][3:0];
-        FloortoLift2 <= lift_requests[1][3:0];
-        FloortoLift3 <= lift_requests[2][3:0];
-        FloortoLift4 <= lift_requests[3][3:0];
+        FloortoLift1 <= lift_requests[0][10:0];
+        FloortoLift2 <= lift_requests[1][10:0];
+        FloortoLift3 <= lift_requests[2][10:0];
+        FloortoLift4 <= lift_requests[3][10:0];
     end
 end
 
