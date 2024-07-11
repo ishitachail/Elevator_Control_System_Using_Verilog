@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-
+`include "define.sv"
 
 
 module testbench;
@@ -7,10 +7,10 @@ module testbench;
 	// Inputs
 	reg clk,rst;
 	reg [1:0] in0,in1,in2,in3,in4,in5,in6,in7,in8,in9,in10;
-	reg [10:0] req_in_lift1;
-	reg [10:0] req_in_lift2;
-	reg [10:0] req_in_lift3;
-	reg [10:0] req_in_lift4;
+	reg [NFLOOR:0] req_in_lift1;
+	reg [NFLOOR:0] req_in_lift2;
+	reg [NFLOOR:0] req_in_lift3;
+	reg [NFLOOR:0] req_in_lift4;
 
 
 	// Outputs
@@ -70,7 +70,7 @@ always #10 clk = ~clk;
 		
 		//req_in_lift1 = 11'b01000000000;
         #20;
-        //req_in_lift1 = 11'b00000000000;
+        //req_in_lift1 = 11'b00000000001;
 		// Wait 100 ns for global reset to finish
 		#300 $finish;
         

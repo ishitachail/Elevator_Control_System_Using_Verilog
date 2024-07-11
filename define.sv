@@ -1,0 +1,1 @@
+`define NFLOOR 10 //Number of floors in the building

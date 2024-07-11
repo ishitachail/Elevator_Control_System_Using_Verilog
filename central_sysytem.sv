@@ -1,4 +1,4 @@
-
+`include "define.sv"
 `timescale 1ns / 1ps
 module central_system(
 offFloorReq,
@@ -24,30 +24,30 @@ input [3:0] liftstate2;
 input [3:0] liftstate3;
 input [3:0] liftstate4;
 
-output reg [10:0] FloortoLift1;
-output reg [10:0] FloortoLift2;
-output reg [10:0] FloortoLift3;
-output reg [10:0] FloortoLift4;
+output reg [NFLOOR:0] FloortoLift1;
+output reg [NFLOOR:0] FloortoLift2;
+output reg [NFLOOR:0] FloortoLift3;
+output reg [NFLOOR:0] FloortoLift4;
 
-input [10:0] FloorReq;
-input [10:0] U;
-input [10:0] D;
-output reg [10:0] offFloorReq;
-output reg [10:0] offUPorDOWN;
+input [NFLOOR:0] FloorReq;
+input [NFLOOR:0] U;
+input [NFLOOR:0] D;
+output reg [NFLOOR:0] offFloorReq;
+output reg [NFLOOR:0] offUPorDOWN;
 
 integer i, j;
 
 // Internal variables to store requests assigned to lifts
-reg [10:0] lift_requests [3:0];
+reg [NFLOOR:0] lift_requests [3:0];
 reg [3:0] lift_floor [3:0];
 
 
 function [3:0] count_requests;
-    input [10:0] requests;
+    input [NFLOOR:0] requests;
     integer i;
     begin
         count_requests = 0;
-        for (i = 0; i < 11; i = i + 1) begin
+        for (i = 0; i < NFLOOR; i = i + 1) begin
             if (requests[i] == 1'b1) begin
                 count_requests = count_requests + 1;
             end
@@ -108,7 +108,7 @@ always @(posedge clk or posedge rst) begin
         lift_floor[3] <= liftstate4[3:0];
 
         // Process each floor request
-        for (i = 0; i < 11; i = i + 1) begin
+        for (i = 0; i < NFLOOR; i = i + 1) begin
             if (FloorReq[i] == 1'b1) begin
                 // Determine direction of request
                 if (U[i] == 1'b1) begin
@@ -122,10 +122,10 @@ always @(posedge clk or posedge rst) begin
         end
 
         // Update output requests for lifts
-        FloortoLift1 <= lift_requests[0][10:0];
-        FloortoLift2 <= lift_requests[1][10:0];
-        FloortoLift3 <= lift_requests[2][10:0];
-        FloortoLift4 <= lift_requests[3][10:0];
+        FloortoLift1 <= lift_requests[0][NFLOOR:0];
+        FloortoLift2 <= lift_requests[1][NFLOOR:0];
+        FloortoLift3 <= lift_requests[2][NFLOOR:0];
+        FloortoLift4 <= lift_requests[3][NFLOOR:0];
     end
 end
 
