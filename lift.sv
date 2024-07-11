@@ -34,8 +34,8 @@ whenever we receive an new request from either the floor or from inside the lift
 module lift(
     input clk,
     input rst,
-    input [3:0] floorReq,
-    input [10:0] req_in_lift,
+    input reg [10:0] floorReq,
+    input reg [10:0] req_in_lift,
     //output reg [10:0] off_req_in_lift,
     output reg [3:0] liftState,
     output reg [1:0] motor_signal
@@ -43,7 +43,7 @@ module lift(
 
 reg [3:0] currFloor;
 reg [1:0] clk_counter; // To track the 2 clock cycles
-reg [10:0] requests;   // 11-bit array for requests
+  // 11-bit array for requests
 
 integer i;
 
@@ -52,7 +52,7 @@ always @(posedge clk or posedge rst) begin
         currFloor <= 4'b0000;
         motor_signal <= 2'b00;
         clk_counter <= 2'b00;
-        requests <= 11'b00000000000;
+        //requests <= 11'b00000000000;
     end else begin
         // Handle movement every 2 clock cycles
         if (clk_counter == 2'b01) begin
@@ -66,15 +66,11 @@ always @(posedge clk or posedge rst) begin
             clk_counter <= clk_counter + 1;
         end
         
-        // Update requests array for external floor request
-        if (floorReq <= 4'b1010 && floorReq >= 4'b0000) begin
-            requests[floorReq] <= 1'b1;
-        end
 
        if (req_in_lift != 11'b00000000000) begin
             for(i = 0; i < 11; i = i + 1)begin
                 if(req_in_lift[i] == 1)begin
-                    requests[i] <= 1'b1;
+                    floorReq[i] <= 1'b1;
                     //off_req_in_lift[i] <= 1'b1;
                     //req_in_lift[i] <= 0;
                 end
@@ -82,25 +78,25 @@ always @(posedge clk or posedge rst) begin
         end
 
         // Check if the lift has reached any requested floor
-        if (requests[currFloor] == 1'b1) begin
-            requests[currFloor] <= 1'b0;
+        if (floorReq[currFloor] == 1'b1) begin
+            floorReq[currFloor] <= 1'b0;
             motor_signal <= 2'b00; // Clear the request
         end
 
 
         
         // Decide the motor_signal based on requests
-        if (motor_signal == 2'b00 || requests[currFloor] == 1'b1) begin
+        if (motor_signal == 2'b00 || floorReq[currFloor] == 1'b1) begin
             for (i = currFloor + 1; i < 11; i = i + 1) begin
-                if (requests[i] == 1'b1) begin
+                if (floorReq[i] == 1'b1) begin
                     motor_signal <= 2'b11; // Move up
                     break;
                 end
             end
         end
-        if(motor_signal == 2'b00 || requests[currFloor] == 1'b1)begin
+        if(motor_signal == 2'b00 || floorReq[currFloor] == 1'b1)begin
             for (i = currFloor - 1; i >= 0; i = i - 1) begin
-                if (requests[i] == 1'b1) begin
+                if (floorReq[i] == 1'b1) begin
                     motor_signal <= 2'b10; // Move down
                     break;
                 end
