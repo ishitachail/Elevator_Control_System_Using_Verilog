@@ -23,11 +23,11 @@ always @(posedge clk or posedge rst) begin
         // Check floor signal
        // if (floor_signal[1] == 1 && off_request[1] == 0) begin
             
-            if (floor_signal[1] == 1 && off_request[1] == 0 && floor_signal[0] == 0) begin
+            if (floor_signal[1] == 1 &&  floor_signal[0] == 0) begin
                 request[1] <= 1;
                 //request[0] <= 0;
                 request[2] <= 1;
-            end else if (floor_signal[1] == 1 && off_request[1] == 0 && floor_signal[0] == 1) begin
+            end else if (floor_signal[1] == 1 && floor_signal[0] == 1) begin
                 //request[1] <= 0;
                 request[0] <= 1;
                 request[2] <= 1;

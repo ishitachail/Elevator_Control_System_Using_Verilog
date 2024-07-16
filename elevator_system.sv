@@ -1,16 +1,16 @@
 `include "define.sv"
 `timescale 1ns / 1ps
 
-module elevator_system(motor_signal1,motor_signal2,motor_signal3,motor_signal4,in0,in1,in2,in3,in4,in5,in6,in7,in8,in9,in10,req_in_lift1,req_in_lift2,req_in_lift3,req_in_lift4,clk,rst);
+module elevator_system(motor_signal1,motor_signal2,motor_signal3,motor_signal4,lift1_in,lift2_in,lift3_in,lift4_in,in0,in1,in2,in3,in4,in5,in6,in7,in8,in9,in10,floor1_out,floor2_out,floor3_out,floor4_out,floor5_out,floor6_out,floor7_out,floor8_out,floor9_out,floor10_out,floor0_out,req_in_lift1,req_in_lift2,req_in_lift3,req_in_lift4,clk,rst);
 
 input [1:0] in0,in1,in2,in3,in4,in5,in6,in7,in8,in9,in10;
-input [NFLOOR:0] req_in_lift1,req_in_lift2,req_in_lift3,req_in_lift4;
+input [10:0] req_in_lift1,req_in_lift2,req_in_lift3,req_in_lift4;
 output [1:0] motor_signal1,motor_signal2,motor_signal3,motor_signal4;
 input clk,rst;
- wire [10:0] lift1_in,lift2_in,lift3_in,lift4_in;
+ output wire [10:0] lift1_in,lift2_in,lift3_in,lift4_in;
  wire [3:0] lift1_out,lift2_out,lift3_out,lift4_out;
  wire [1:0]floor1_in,floor2_in,floor3_in,floor4_in,floor5_in,floor6_in,floor7_in,floor8_in,floor9_in,floor10_in,floor0_in;
- wire [2:0] floor1_out,floor2_out,floor3_out,floor4_out,floor5_out,floor6_out,floor7_out,floor8_out,floor9_out,floor10_out,floor0_out;
+output wire [2:0] floor1_out,floor2_out,floor3_out,floor4_out,floor5_out,floor6_out,floor7_out,floor8_out,floor9_out,floor10_out,floor0_out;
  
 lift lift1(
 	.req_in_lift(req_in_lift1),
